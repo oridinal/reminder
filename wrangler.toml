@@ -1,0 +1,12 @@
+name = "oridinal-reminder"
+main = "src/index.ts"
+compatibility_date = "2023-04-08"
+
+# disable subdomain as we're only using the scheduled handler
+workers_dev = false
+
+[triggers]
+crons = ["*/5 * * * *"] # every 5 minutes
+
+[vars]
+DISCORD_WEBHOOK_URL = ""
