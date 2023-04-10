@@ -15,6 +15,11 @@ describe('checkRooEventTime', () => {
 			checkRooEventTime({ hours: 5, minutes: 0 }, set(Date.now(), { hours: 4, minutes: 50 })),
 			'an hour before',
 		).toBe(PayloadKind.tenMinutesBeforeEvent);
+
+		expect(
+			checkRooEventTime({ hours: 20, minutes: 0 }, set(Date.now(), { hours: 20, minutes: 10 })),
+			'not before',
+		).not.toBe(PayloadKind.tenMinutesBeforeEvent);
 	});
 
 	it('should handle eventStart', () => {

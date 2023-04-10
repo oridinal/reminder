@@ -1,4 +1,4 @@
-import { intervalToDuration, set } from 'date-fns';
+import { intervalToDuration, isBefore, set } from 'date-fns';
 
 import { RooEvent, RooEventTime } from './event';
 
@@ -18,12 +18,10 @@ export const checkRooEventTime = (eventTime: RooEventTime, date: Date) => {
 	const { hours = 0, minutes = 0 } = intervalToDuration({ start: eventDate, end: date });
 
 	if (hours === 0) {
-		switch (minutes) {
-			case 10:
-				return PayloadKind.tenMinutesBeforeEvent;
-
-			case 0:
-				return PayloadKind.eventStart;
+		if (minutes === 0) {
+			return PayloadKind.eventStart;
+		} else if (minutes === 10 && isBefore(date, eventDate)) {
+			return PayloadKind.tenMinutesBeforeEvent;
 		}
 	}
 };
