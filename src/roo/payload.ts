@@ -13,7 +13,7 @@ export enum PayloadKind {
 	eventStart,
 }
 
-export const checkRooEventTime = (eventTime: RooEventTime, date: Date) => {
+export const getPayloadKind = (eventTime: RooEventTime, date: Date) => {
 	const eventDate = set(date, eventTime);
 	const { hours = 0, minutes = 0 } = intervalToDuration({ start: eventDate, end: date });
 
@@ -32,8 +32,8 @@ const payloadTemplate = {
 } satisfies Record<PayloadKind, string>;
 
 export const generatePayload = (
-	kind: PayloadKind,
 	event: RooEvent,
+	kind: PayloadKind,
 	{ ROLE_MENTION_ID }: Env,
 ): DiscordWebhookPayload => {
 	const mention = `<@&${ROLE_MENTION_ID}>`;

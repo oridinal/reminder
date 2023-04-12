@@ -1,33 +1,32 @@
 import { utcToZonedTime } from 'date-fns-tz';
 
-import { ROO_TIME_ZONE, rooEventSchedule, getRooEventTime } from './roo/event';
-import { DiscordWebhookPayload, checkRooEventTime, generatePayload } from './roo/payload';
+import { ROO_TIME_ZONE, rooEvent, getRooEventTime } from './roo/event';
+import { DiscordWebhookPayload, getPayloadKind, generatePayload } from './roo/payload';
 
 const scheduled = ((_controller, env, ctx) => {
-	const now = utcToZonedTime(Date.now(), ROO_TIME_ZONE);
+	const date = utcToZonedTime(Date.now(), ROO_TIME_ZONE);
 
-	const events = rooEventSchedule[now.getDay() as Day];
+	const events = rooEvent[date.getDay() as Day];
 	const payloads = [] as DiscordWebhookPayload[];
 	for (const event of events) {
 		const eventTime = getRooEventTime(event);
-		const payloadKind = checkRooEventTime(eventTime, now);
+		const payloadKind = getPayloadKind(eventTime, date);
 		if (payloadKind !== undefined) {
-			const payload = generatePayload(payloadKind, event, env);
-			payloads.push(payload);
+			payloads.push(generatePayload(event, payloadKind, env));
 		}
 	}
 
-	ctx.waitUntil(
-		Promise.all(
-			payloads.map((payload) =>
-				fetch(env.DISCORD_WEBHOOK_URL, {
-					method: 'POST',
-					headers: { 'Content-Type': 'application/json' },
-					body: JSON.stringify(payload),
-				}),
-			),
-		),
-	);
+	if (payloads.length > 0) {
+		const promises = payloads.map((payload) =>
+			fetch(env.DISCORD_WEBHOOK_URL, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(payload),
+			}),
+		);
+
+		ctx.waitUntil(Promise.all(promises));
+	}
 }) satisfies ExportedHandlerScheduledHandler<Env>;
 
 export default { scheduled } satisfies ExportedHandler<Env>;

@@ -1,15 +1,5 @@
 export const ROO_TIME_ZONE = '+07:00';
 
-enum Day {
-	sunday,
-	monday,
-	tuesday,
-	wednesday,
-	thursday,
-	friday,
-	saturday,
-}
-
 export enum RooEvent {
 	'Arena',
 	'Extreme Challenge',
@@ -22,14 +12,14 @@ export enum RooEvent {
 	'Weekend Banquet',
 }
 
-export const rooEventSchedule = {
-	[Day.sunday]: [RooEvent['Themed Party'], RooEvent['Guild Expedition']],
-	[Day.monday]: [RooEvent['Guild Feast'], RooEvent['Extreme Challenge']],
-	[Day.tuesday]: [RooEvent['Guild Feast'], RooEvent['Time-Space Abnormality'], RooEvent['The Guild League']],
-	[Day.wednesday]: [RooEvent['Rune Fashion'], RooEvent['Guild Feast'], RooEvent.Arena],
-	[Day.thursday]: [RooEvent['Guild Feast'], RooEvent['Guild Expedition'], RooEvent['The Guild League']],
-	[Day.friday]: [RooEvent['Guild Feast'], RooEvent['Time-Space Abnormality']],
-	[Day.saturday]: [RooEvent['Weekend Banquet'], RooEvent['Time-Space Abnormality'], RooEvent['The Guild League']],
+export const rooEvent = {
+	0: /* sunday */ [RooEvent['Themed Party'], RooEvent['Guild Expedition']],
+	1: /* monday */ [RooEvent['Guild Feast'], RooEvent['Extreme Challenge']],
+	2: /* tuesday */ [RooEvent['Guild Feast'], RooEvent['Time-Space Abnormality'], RooEvent['The Guild League']],
+	3: /* wednesday */ [RooEvent['Rune Fashion'], RooEvent['Guild Feast'], RooEvent.Arena],
+	4: /* thursday */ [RooEvent['Guild Feast'], RooEvent['Guild Expedition'], RooEvent['The Guild League']],
+	5: /* friday */ [RooEvent['Guild Feast'], RooEvent['Time-Space Abnormality']],
+	6: /* saturday */ [RooEvent['Weekend Banquet'], RooEvent['Time-Space Abnormality'], RooEvent['The Guild League']],
 } satisfies Record<Day, RooEvent[]>;
 
 export interface RooEventTime {
