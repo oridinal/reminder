@@ -3,10 +3,6 @@ import { utcToZonedTime } from 'date-fns-tz';
 import { ROO_TIME_ZONE, rooEventSchedule, getRooEventTime } from './roo/event';
 import { DiscordWebhookPayload, checkRooEventTime, generatePayload } from './roo/payload';
 
-interface Env {
-	DISCORD_WEBHOOK_URL: string;
-}
-
 const scheduled = ((_controller, env, ctx) => {
 	const now = utcToZonedTime(Date.now(), ROO_TIME_ZONE);
 
@@ -16,7 +12,7 @@ const scheduled = ((_controller, env, ctx) => {
 		const eventTime = getRooEventTime(event);
 		const payloadKind = checkRooEventTime(eventTime, now);
 		if (payloadKind !== undefined) {
-			const payload = generatePayload(payloadKind, event);
+			const payload = generatePayload(payloadKind, event, env);
 			payloads.push(payload);
 		}
 	}

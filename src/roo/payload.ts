@@ -2,8 +2,6 @@ import { intervalToDuration, isBefore, set } from 'date-fns';
 
 import { RooEvent, RooEventTime } from './event';
 
-import { config } from '../config';
-
 // TODO: use discord embed with custom images for each events
 export interface DiscordWebhookPayload {
 	/** the message contents (up to 2000 characters) */
@@ -33,8 +31,12 @@ const payloadTemplate = {
 	[PayloadKind.tenMinutesBeforeEvent]: '10 menit lagi event {} mulai',
 } satisfies Record<PayloadKind, string>;
 
-export const generatePayload = (kind: PayloadKind, event: RooEvent): DiscordWebhookPayload => {
-	const mention = `<@&${config.roleMentionId}>`;
+export const generatePayload = (
+	kind: PayloadKind,
+	event: RooEvent,
+	{ ROLE_MENTION_ID }: Env,
+): DiscordWebhookPayload => {
+	const mention = `<@&${ROLE_MENTION_ID}>`;
 	const content = payloadTemplate[kind].replace('{}', `**${RooEvent[event]}**`);
 	return { content: `${mention} ${content}` };
 };
