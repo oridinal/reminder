@@ -1,31 +1,39 @@
 import { utcToZonedTime } from 'date-fns-tz';
 
-import { ROO_TIME_ZONE, rooEvent, getRooEventTime } from './roo/event';
-import { DiscordWebhookPayload, getPayloadKind, generatePayload } from './roo/payload';
+import { generateEmbed } from './roo/embed';
+import { ROO_TIME_ZONE, getRooEventTime, rooEvent } from './roo/events';
+import { matchEvent } from './roo/match';
+
+import { DiscordWebhookEmbed, DiscordWebhookPayload } from './types';
 
 const scheduled = ((_controller, env, ctx) => {
 	const date = utcToZonedTime(Date.now(), ROO_TIME_ZONE);
 
 	const events = rooEvent[date.getDay() as Day];
-	const payloads = [] as DiscordWebhookPayload[];
+	const embeds = [] as DiscordWebhookEmbed[];
 	for (const event of events) {
 		const eventTime = getRooEventTime(event);
-		const payloadKind = getPayloadKind(eventTime, date);
-		if (payloadKind !== undefined) {
-			payloads.push(generatePayload(event, payloadKind, env));
+		const matchKind = matchEvent(eventTime, date);
+		if (matchKind !== undefined) {
+			embeds.push(generateEmbed(event, matchKind));
 		}
 	}
 
-	if (payloads.length > 0) {
-		const promises = payloads.map((payload) =>
+	if (embeds.length > 0) {
+		const payload = {
+			// <@&{ID}> is role mention
+			// ref:  https://discord.com/developers/docs/reference#message-formatting-formats
+			content: `<@&${env.ROLE_MENTION_ID}>`,
+			embeds,
+		} satisfies DiscordWebhookPayload;
+
+		ctx.waitUntil(
 			fetch(env.DISCORD_WEBHOOK_URL, {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify(payload),
+				headers: { 'Content-Type': 'application/json' },
+				method: 'POST',
 			}),
 		);
-
-		ctx.waitUntil(Promise.all(promises));
 	}
 }) satisfies ExportedHandlerScheduledHandler<Env>;
 
