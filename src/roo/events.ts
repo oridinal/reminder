@@ -1,25 +1,25 @@
 export const ROO_TIME_ZONE = '+07:00';
 
 export enum RooEvent {
-	'Arena',
-	'Extreme Challenge',
-	'Guild Expedition',
-	'Guild Feast',
-	'Rune Fashion',
-	'The Guild League',
-	'Themed Party',
-	'Time-Space Abnormality',
-	'Weekend Banquet',
+	Arena,
+	ExtremeChallenge,
+	GuildExpedition,
+	GuildFeast,
+	RuneFashion,
+	TheGuildLeague,
+	ThemedParty,
+	TimeSpaceAbnormality,
+	WeekendBanquet,
 }
 
 export const rooEvent = {
-	0: /* sunday */ [RooEvent['Themed Party'], RooEvent['Guild Expedition']],
-	1: /* monday */ [RooEvent['Guild Feast'], RooEvent['Extreme Challenge']],
-	2: /* tuesday */ [RooEvent['Guild Feast'], RooEvent['Time-Space Abnormality'], RooEvent['The Guild League']],
-	3: /* wednesday */ [RooEvent['Rune Fashion'], RooEvent['Guild Feast'], RooEvent.Arena],
-	4: /* thursday */ [RooEvent['Guild Feast'], RooEvent['Guild Expedition'], RooEvent['The Guild League']],
-	5: /* friday */ [RooEvent['Guild Feast'], RooEvent['Time-Space Abnormality']],
-	6: /* saturday */ [RooEvent['Weekend Banquet'], RooEvent['Time-Space Abnormality'], RooEvent['The Guild League']],
+	0: /* sunday */ [RooEvent.ThemedParty, RooEvent.GuildExpedition],
+	1: /* monday */ [RooEvent.GuildFeast, RooEvent.ExtremeChallenge],
+	2: /* tuesday */ [RooEvent.GuildFeast, RooEvent.TimeSpaceAbnormality, RooEvent.TheGuildLeague],
+	3: /* wednesday */ [RooEvent.RuneFashion, RooEvent.GuildFeast, RooEvent.Arena],
+	4: /* thursday */ [RooEvent.GuildFeast, RooEvent.GuildExpedition, RooEvent.TheGuildLeague],
+	5: /* friday */ [RooEvent.GuildFeast, RooEvent.TimeSpaceAbnormality],
+	6: /* saturday */ [RooEvent.WeekendBanquet, RooEvent.TimeSpaceAbnormality, RooEvent.TheGuildLeague],
 } satisfies Record<Day, RooEvent[]>;
 
 export interface RooEventTime {
@@ -29,23 +29,23 @@ export interface RooEventTime {
 
 export const getRooEventTime = (event: RooEvent): RooEventTime => {
 	switch (event) {
-		case RooEvent['Rune Fashion']:
+		case RooEvent.RuneFashion:
 			return { hours: 5, minutes: 0 };
 
-		case RooEvent['Guild Feast']:
-		case RooEvent['Themed Party']:
-		case RooEvent['Weekend Banquet']:
+		case RooEvent.GuildFeast:
+		case RooEvent.ThemedParty:
+		case RooEvent.WeekendBanquet:
 			return { hours: 20, minutes: 0 };
 
 		case RooEvent.Arena:
 			return { hours: 20, minutes: 25 };
 
-		case RooEvent['Extreme Challenge']:
-		case RooEvent['Guild Expedition']:
-		case RooEvent['Time-Space Abnormality']:
+		case RooEvent.ExtremeChallenge:
+		case RooEvent.GuildExpedition:
+		case RooEvent.TimeSpaceAbnormality:
 			return { hours: 20, minutes: 30 };
 
-		case RooEvent['The Guild League']:
+		case RooEvent.TheGuildLeague:
 			return { hours: 20, minutes: 55 };
 	}
 };

@@ -3,8 +3,8 @@ import { intervalToDuration, isBefore, set } from 'date-fns';
 import { RooEventTime } from './events';
 
 export enum MatchKind {
-	'starting in 10 minutes',
-	'starts now',
+	StartingIn10Minutes,
+	StartsNow,
 }
 
 export const matchEvent = (eventTime: RooEventTime, date: Date) => {
@@ -13,9 +13,9 @@ export const matchEvent = (eventTime: RooEventTime, date: Date) => {
 
 	if (hours === 0) {
 		if (minutes === 0) {
-			return MatchKind['starts now'];
+			return MatchKind.StartsNow;
 		} else if (minutes === 10 && isBefore(date, eventDate)) {
-			return MatchKind['starting in 10 minutes'];
+			return MatchKind.StartingIn10Minutes;
 		}
 	}
 };
