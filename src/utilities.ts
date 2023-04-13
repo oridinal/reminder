@@ -1,4 +1,4 @@
-export const pascalCaseToSpaceSeparated = (s: string) => {
+export const toSpaceSeparatedPascalCase = (s: string) => {
 	let acc = '';
 	for (const [index, char] of Array.from(s).entries()) {
 		if (

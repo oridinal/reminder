@@ -1,21 +1,29 @@
 import { utcToZonedTime } from 'date-fns-tz';
 
 import { generateEmbed } from './roo/embed';
-import { ROO_TIME_ZONE, getRooEventTime, rooEvent } from './roo/events';
 import { matchEvent } from './roo/match';
+
+import { ROO_TIME_ZONE, RooSchedule, RooScheduleKind, getScheduleTime } from './roo/schedule';
+import { dailyEvents } from './roo/schedule/daily-event';
+import { allTradeInventoryReset } from './roo/schedule/trade-inventory-reset';
 
 import { DiscordWebhookEmbed, DiscordWebhookPayload } from './types';
 
 const scheduled = ((_controller, env, ctx) => {
 	const date = utcToZonedTime(Date.now(), ROO_TIME_ZONE);
 
-	const events = rooEvent[date.getDay() as Day];
+	const events = dailyEvents[date.getDay() as Day];
+	const schedules = [
+		...events.map((value): RooSchedule => [value, RooScheduleKind.DailyEvent]),
+		...allTradeInventoryReset.map((value): RooSchedule => [value, RooScheduleKind.TradeInventoryReset]),
+	] satisfies RooSchedule[];
+
 	const embeds = [] as DiscordWebhookEmbed[];
-	for (const event of events) {
-		const eventTime = getRooEventTime(event);
-		const matchKind = matchEvent(eventTime, date);
-		if (matchKind !== undefined) {
-			embeds.push(generateEmbed(event, matchKind));
+	for (const schedule of schedules) {
+		const time = getScheduleTime(schedule);
+		const match = matchEvent(time, date);
+		if (match !== undefined) {
+			embeds.push(generateEmbed(schedule, match));
 		}
 	}
 

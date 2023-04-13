@@ -1,21 +1,24 @@
-import { RooEvent } from './events';
 import { MatchKind } from './match';
+import { RooSchedule, RooScheduleKind, getScheduleValue } from './schedule';
 
 import { DiscordWebhookEmbed } from '../types';
-import { pascalCaseToSpaceSeparated, toTitleCase } from '../utilities';
+import { toSpaceSeparatedPascalCase, toTitleCase } from '../utilities';
 
-const embedColors = {
+const colors = {
 	[MatchKind.StartsNow]: 0x77dd77, // pastel green
 	[MatchKind.StartingIn10Minutes]: 0x8bd3e6, // pastel blue
 } satisfies Record<MatchKind, number>;
 
-export const generateEmbed = (event: RooEvent, kind: MatchKind): DiscordWebhookEmbed => {
-	const [title, description] = [RooEvent[event], MatchKind[kind]].map(pascalCaseToSpaceSeparated);
+export const generateEmbed = (value: RooSchedule, match: MatchKind): DiscordWebhookEmbed => {
+	const [title, description, footer] = [getScheduleValue(value), MatchKind[match], RooScheduleKind[value[1]]].map(
+		toSpaceSeparatedPascalCase,
+	);
 
 	return {
 		title,
 		description: toTitleCase(description),
-		color: embedColors[kind],
+		footer: { text: footer },
+		color: colors[match],
 		timestamp: new Date().toISOString(),
 		image: { url: 'https://b.cgas.io/LprtTW9DcVG-.png' },
 	};

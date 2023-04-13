@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import { pascalCaseToSpaceSeparated, toTitleCase } from './utilities';
 
-describe('pascalCaseToSpaceSeparated', () => {
+import { toSpaceSeparatedPascalCase, toTitleCase } from './utilities';
+
+describe('toSpaceSeparatedPascalCase', () => {
 	it('should convert correctly', () => {
 		const predicates = [
 			['PascalCase', 'Pascal Case'],
@@ -10,7 +11,7 @@ describe('pascalCaseToSpaceSeparated', () => {
 		];
 
 		for (const [left, right] of predicates) {
-			expect(pascalCaseToSpaceSeparated(left), `${left} -> ${right}`).toBe(right);
+			expect(toSpaceSeparatedPascalCase(left), `${left} -> ${right}`).toBe(right);
 		}
 	});
 });

@@ -1,13 +1,13 @@
 import { intervalToDuration, isBefore, set } from 'date-fns';
 
-import { RooEventTime } from './events';
+import { ScheduleTime } from './schedule';
 
 export enum MatchKind {
 	StartingIn10Minutes,
 	StartsNow,
 }
 
-export const matchEvent = (eventTime: RooEventTime, date: Date) => {
+export const matchEvent = (eventTime: ScheduleTime, date: Date) => {
 	const eventDate = set(date, eventTime);
 	const { hours = 0, minutes = 0 } = intervalToDuration({ start: eventDate, end: date });
 
