@@ -15,5 +15,3 @@ export const toSpaceSeparatedPascalCase = (s: string) => {
 
 	return acc;
 };
-
-export const toTitleCase = (s: string) => [s[0].toUpperCase(), s.slice(1).toLowerCase()].join('');

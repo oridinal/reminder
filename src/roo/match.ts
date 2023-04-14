@@ -3,7 +3,7 @@ import { intervalToDuration, isBefore, set } from 'date-fns';
 import { ScheduleTime } from './schedule';
 
 export enum MatchKind {
-	StartingIn10Minutes,
+	StartsIn10Minutes,
 	StartsNow,
 }
 
@@ -15,7 +15,7 @@ export const matchEvent = (eventTime: ScheduleTime, date: Date) => {
 		if (minutes === 0) {
 			return MatchKind.StartsNow;
 		} else if (minutes === 10 && isBefore(date, eventDate)) {
-			return MatchKind.StartingIn10Minutes;
+			return MatchKind.StartsIn10Minutes;
 		}
 	}
 };

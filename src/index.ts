@@ -28,7 +28,7 @@ const scheduled = ((_controller, env, ctx) => {
 		const time = getScheduleTime(schedule);
 		const match = matchEvent(time, date);
 		if (match !== undefined) {
-			const embed = generateEmbed(schedule, match);
+			const embed = generateEmbed(schedule, match, date);
 			embeds.push([embed, schedule[1]]);
 		}
 	}

@@ -9,13 +9,13 @@ describe('checkRooEventTime', () => {
 		expect(
 			matchEvent({ hours: 20, minutes: 55 }, set(Date.now(), { hours: 20, minutes: 45 })),
 			'in the same hour',
-		).toBe(MatchKind.StartingIn10Minutes);
+		).toBe(MatchKind.StartsIn10Minutes);
 		expect(matchEvent({ hours: 5, minutes: 0 }, set(Date.now(), { hours: 4, minutes: 50 })), 'an hour before').toBe(
-			MatchKind.StartingIn10Minutes,
+			MatchKind.StartsIn10Minutes,
 		);
 
 		expect(matchEvent({ hours: 20, minutes: 0 }, set(Date.now(), { hours: 20, minutes: 10 })), 'not before').not.toBe(
-			MatchKind.StartingIn10Minutes,
+			MatchKind.StartsIn10Minutes,
 		);
 	});
 
