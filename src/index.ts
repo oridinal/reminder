@@ -28,19 +28,22 @@ const scheduled = ((_controller, env, ctx) => {
 	}
 
 	if (embeds.length > 0) {
-		const payload = {
-			// <@&{ID}> is role mention
-			// ref:  https://discord.com/developers/docs/reference#message-formatting-formats
-			content: `<@&${env.ROLE_MENTION_ID}>`,
-			embeds,
-		} satisfies DiscordWebhookPayload;
+		// <@&{ID}> is role mention
+		// ref:  https://discord.com/developers/docs/reference#message-formatting-formats
+		const content = `<@&${env.ROLE_MENTION_ID}>`;
 
 		ctx.waitUntil(
-			fetch(env.DISCORD_WEBHOOK_URL, {
-				body: JSON.stringify(payload),
-				headers: { 'Content-Type': 'application/json' },
-				method: 'POST',
-			}),
+			Promise.all(
+				embeds.map(async (embed) => {
+					const payload = { content, embeds: [embed] } satisfies DiscordWebhookPayload;
+
+					await fetch(env.DISCORD_WEBHOOK_URL, {
+						body: JSON.stringify(payload),
+						headers: { 'Content-Type': 'application/json' },
+						method: 'POST',
+					});
+				}),
+			),
 		);
 	}
 }) satisfies ExportedHandlerScheduledHandler<Env>;
