@@ -12,7 +12,7 @@ export enum RooDaily {
 	WeekendBanquet,
 }
 
-export const dailies = {
+const dailies = {
 	// sunday
 	0: [RooDaily.ThemedParty, RooDaily.GuildExpedition],
 
@@ -34,6 +34,10 @@ export const dailies = {
 	// saturday
 	6: [RooDaily.WeekendBanquet, RooDaily.TimeSpaceAbnormality, RooDaily.TheGuildLeague],
 } satisfies Record<Day, RooDaily[]>;
+
+export const getRooDailies = (date: Date) => {
+	return dailies[date.getDay() as Day];
+};
 
 export const getRooDailyTime = (event: RooDaily): ScheduleTime => {
 	switch (event) {
