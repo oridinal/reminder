@@ -12,31 +12,38 @@ export enum RooDaily {
 	WeekendBanquet,
 }
 
-const dailies = {
-	// sunday
-	0: [RooDaily.ThemedParty, RooDaily.GuildExpedition],
+export const getRooDailies = (date: Date): RooDaily[] => {
+	const day = date.getDay() as Day;
 
-	// monday
-	1: [RooDaily.GuildFeast, RooDaily.ExtremeChallenge],
+	switch (day) {
+		case 0:
+			// sunday
+			return [RooDaily.ThemedParty, RooDaily.GuildExpedition];
 
-	// tuesday
-	2: [RooDaily.GuildFeast, RooDaily.TimeSpaceAbnormality, RooDaily.TheGuildLeague],
+		case 1:
+			// monday
+			return [RooDaily.GuildFeast, RooDaily.ExtremeChallenge];
 
-	// wednesday
-	3: [RooDaily.RuneFashion, RooDaily.GuildFeast, RooDaily.Arena],
+		case 2:
+			// tuesday
+			return [RooDaily.GuildFeast, RooDaily.TimeSpaceAbnormality, RooDaily.TheGuildLeague];
 
-	// thursday
-	4: [RooDaily.GuildFeast, RooDaily.GuildExpedition, RooDaily.TheGuildLeague],
+		case 3:
+			// wednesday
+			return [RooDaily.RuneFashion, RooDaily.GuildFeast, RooDaily.Arena];
 
-	// friday
-	5: [RooDaily.GuildFeast, RooDaily.TimeSpaceAbnormality],
+		case 4:
+			// thursday
+			return [RooDaily.GuildFeast, RooDaily.GuildExpedition, RooDaily.TheGuildLeague];
 
-	// saturday
-	6: [RooDaily.WeekendBanquet, RooDaily.TimeSpaceAbnormality, RooDaily.TheGuildLeague],
-} satisfies Record<Day, RooDaily[]>;
+		case 5:
+			// friday
+			return [RooDaily.GuildFeast, RooDaily.TimeSpaceAbnormality];
 
-export const getRooDailies = (date: Date) => {
-	return dailies[date.getDay() as Day];
+		case 6:
+			// saturday
+			return [RooDaily.WeekendBanquet, RooDaily.TimeSpaceAbnormality, RooDaily.TheGuildLeague];
+	}
 };
 
 export const getRooDailyTime = (event: RooDaily): ScheduleTime => {
