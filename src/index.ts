@@ -8,6 +8,7 @@ import { dailyEvents } from './roo/schedule/daily-event';
 import { allTradeInventoryReset } from './roo/schedule/trade-inventory-reset';
 
 import { DiscordWebhookEmbed, DiscordWebhookPayload } from './types';
+import { toSpaceSeparatedPascalCase } from './utilities';
 
 const scheduled = ((_controller, env, ctx) => {
 	const date = utcToZonedTime(Date.now(), ROO_TIME_ZONE);
@@ -18,31 +19,37 @@ const scheduled = ((_controller, env, ctx) => {
 		...allTradeInventoryReset.map((value): RooSchedule => [value, RooScheduleKind.TradeInventoryReset]),
 	] satisfies RooSchedule[];
 
-	const embeds = [] as DiscordWebhookEmbed[];
+	const embeds = [] as [DiscordWebhookEmbed, RooScheduleKind][];
 	for (const schedule of schedules) {
 		const time = getScheduleTime(schedule);
 		const match = matchEvent(time, date);
 		if (match !== undefined) {
-			embeds.push(generateEmbed(schedule, match));
+			const embed = generateEmbed(schedule, match);
+			embeds.push([embed, schedule[1]]);
 		}
 	}
 
 	if (embeds.length > 0) {
 		// <@&{ID}> is role mention
 		// ref:  https://discord.com/developers/docs/reference#message-formatting-formats
-		const content = `<@&${env.ROLE_MENTION_ID}>`;
+		const mention = `<@&${env.ROLE_MENTION_ID}>`;
 
 		ctx.waitUntil(
 			Promise.all(
-				embeds.map(async (embed) => {
-					const payload = { content, embeds: [embed] } satisfies DiscordWebhookPayload;
-
-					await fetch(env.DISCORD_WEBHOOK_URL, {
-						body: JSON.stringify(payload),
-						headers: { 'Content-Type': 'application/json' },
-						method: 'POST',
-					});
-				}),
+				embeds
+					.map(
+						([embed, kind]): DiscordWebhookPayload => ({
+							content: `${mention} ${toSpaceSeparatedPascalCase(RooScheduleKind[kind])}`,
+							embeds: [embed],
+						}),
+					)
+					.map((payload) =>
+						fetch(env.DISCORD_WEBHOOK_URL, {
+							body: JSON.stringify(payload),
+							headers: { 'Content-Type': 'application/json' },
+							method: 'POST',
+						}),
+					),
 			),
 		);
 	}
