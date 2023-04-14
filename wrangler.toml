@@ -9,5 +9,5 @@ workers_dev = false
 crons = ["*/5 * * * *"] # every 5 minutes
 
 [vars]
-DISCORD_WEBHOOK_URL = ""
-ROLE_MENTION_ID = ""
+# DISCORD_ROLE_MENTION_ID
+# DISCORD_WEBHOOK_URL

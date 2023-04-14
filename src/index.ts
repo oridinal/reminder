@@ -36,7 +36,7 @@ const scheduled = ((_controller, env, ctx) => {
 	if (embeds.length > 0) {
 		// <@&{ID}> is role mention
 		// ref:  https://discord.com/developers/docs/reference#message-formatting-formats
-		const mention = `<@&${env.ROLE_MENTION_ID}>`;
+		const mention = `<@&${env.DISCORD_ROLE_MENTION_ID}>`;
 
 		ctx.waitUntil(
 			Promise.all(
