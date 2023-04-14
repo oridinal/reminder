@@ -26,7 +26,8 @@ export const generateEmbed = (value: RooSchedule, match: MatchKind): DiscordWebh
 		description: toTitleCase(description),
 		footer: { text: footer },
 		color: colors[match],
-		timestamp: new Date().toISOString(),
 		image: { url: images[schedule] },
+		timestamp: new Date().toISOString(),
+		thumbnail: { url: 'https://b.cgas.io/mVhvd_L8tHq1.png' },
 	};
 };

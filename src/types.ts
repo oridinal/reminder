@@ -25,6 +25,12 @@ export interface DiscordWebhookEmbed {
 		url: string;
 	};
 
+	/** thumbnail information */
+	thumbnail?: {
+		/** source url of thumbnail (only supports http(s) and attachments) */
+		url: string;
+	};
+
 	/** footer information */
 	footer?: {
 		/** footer text */
