@@ -5,7 +5,7 @@ import { matchEvent } from './roo/match';
 
 import { ROO_TIME_ZONE, RooSchedule, RooScheduleKind, getScheduleTime } from './roo/schedule';
 import { dailyEvents } from './roo/schedule/daily-event';
-import { allTradeInventoryReset } from './roo/schedule/trade-inventory-reset';
+import { trades } from './roo/schedule/trade';
 
 import { DiscordWebhookEmbed, DiscordWebhookPayload } from './types';
 import { toSpaceSeparatedPascalCase } from './utilities';
@@ -16,7 +16,7 @@ const scheduled = ((_controller, env, ctx) => {
 	const events = dailyEvents[date.getDay() as Day];
 	const schedules = [
 		...events.map((value): RooSchedule => [value, RooScheduleKind.DailyEvent]),
-		...allTradeInventoryReset.map((value): RooSchedule => [value, RooScheduleKind.TradeInventoryReset]),
+		...trades.map((value): RooSchedule => [value, RooScheduleKind.Trade]),
 	] satisfies RooSchedule[];
 
 	const embeds = [] as [DiscordWebhookEmbed, RooScheduleKind][];

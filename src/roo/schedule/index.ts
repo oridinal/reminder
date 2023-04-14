@@ -1,5 +1,5 @@
 import { RooDailyEvent, getRooDailyEventTime } from './daily-event';
-import { RooTradeInventoryReset, getRooTradeInventoryResetTime } from './trade-inventory-reset';
+import { RooTrade, getRooTradeTime } from './trade';
 
 export const ROO_TIME_ZONE = '+07:00';
 
@@ -10,20 +10,18 @@ export interface ScheduleTime {
 
 export enum RooScheduleKind {
 	DailyEvent,
-	TradeInventoryReset,
+	Trade,
 }
 
-export type RooSchedule =
-	| [RooDailyEvent, RooScheduleKind.DailyEvent]
-	| [RooTradeInventoryReset, RooScheduleKind.TradeInventoryReset];
+export type RooSchedule = [RooDailyEvent, RooScheduleKind.DailyEvent] | [RooTrade, RooScheduleKind.Trade];
 
 export const getScheduleTime = ([value, kind]: RooSchedule): ScheduleTime => {
 	switch (kind) {
 		case RooScheduleKind.DailyEvent:
 			return getRooDailyEventTime(value);
 
-		case RooScheduleKind.TradeInventoryReset:
-			return getRooTradeInventoryResetTime(value);
+		case RooScheduleKind.Trade:
+			return getRooTradeTime(value);
 	}
 };
 
@@ -32,7 +30,7 @@ export const getScheduleValue = ([value, kind]: RooSchedule) => {
 		case RooScheduleKind.DailyEvent:
 			return RooDailyEvent[value];
 
-		case RooScheduleKind.TradeInventoryReset:
-			return RooTradeInventoryReset[value];
+		case RooScheduleKind.Trade:
+			return RooTrade[value];
 	}
 };
