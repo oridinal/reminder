@@ -9,8 +9,15 @@ const colors = {
 	[MatchKind.StartingIn10Minutes]: 0x8bd3e6, // pastel blue
 } satisfies Record<MatchKind, number>;
 
+const images = {
+	[RooScheduleKind.Trade]: 'https://b.cgas.io/dQCoeklKFKs7.jpg',
+	[RooScheduleKind.Reset]: 'https://b.cgas.io/RcUSRL3-9gug.jpg',
+	[RooScheduleKind.Daily]: 'https://b.cgas.io/LprtTW9DcVG-.png',
+} satisfies Record<RooScheduleKind, string>;
+
 export const generateEmbed = (value: RooSchedule, match: MatchKind): DiscordWebhookEmbed => {
-	const [title, description, footer] = [getScheduleValue(value), MatchKind[match], RooScheduleKind[value[1]]].map(
+	const schedule = value[1];
+	const [title, description, footer] = [getScheduleValue(value), MatchKind[match], RooScheduleKind[schedule]].map(
 		toSpaceSeparatedPascalCase,
 	);
 
@@ -20,6 +27,6 @@ export const generateEmbed = (value: RooSchedule, match: MatchKind): DiscordWebh
 		footer: { text: footer },
 		color: colors[match],
 		timestamp: new Date().toISOString(),
-		image: { url: 'https://b.cgas.io/LprtTW9DcVG-.png' },
+		image: { url: images[schedule] },
 	};
 };
