@@ -40,7 +40,7 @@ export const generateEmbed = (
 		footer: { text: footer },
 		color: colors[match],
 		image: { url: images[schedule] },
-		timestamp: date.toISOString(),
+		timestamp: new Date().toISOString(),
 		thumbnail: { url: 'https://b.cgas.io/mVhvd_L8tHq1.png' },
 	};
 };
