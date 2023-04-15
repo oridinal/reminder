@@ -1,7 +1,8 @@
-import { getSeconds } from 'date-fns';
+import { getUnixTime, set } from 'date-fns';
+import { zonedTimeToUtc } from 'date-fns-tz';
 
 import { MatchKind } from './match';
-import { RooSchedule, RooScheduleKind, getScheduleValue } from './schedule';
+import { ROO_TIME_ZONE, RooSchedule, RooScheduleKind, getScheduleTime, getScheduleValue } from './schedule';
 
 import { DiscordWebhookEmbed } from '../types';
 import { toSpaceSeparatedPascalCase } from '../utilities';
@@ -21,10 +22,13 @@ export const generateEmbed = (value: RooSchedule, match: MatchKind, date: Date):
 	const schedule = value[1];
 	const [title, footer] = [getScheduleValue(value), RooScheduleKind[schedule]].map(toSpaceSeparatedPascalCase);
 
-	const seconds = getSeconds(date);
+	const time = getScheduleTime(value);
+	const date_ = set(date, time);
+	const dateUtc = zonedTimeToUtc(date_, ROO_TIME_ZONE);
+	const unixTime = getUnixTime(dateUtc);
 	// description will be shown like `20:00 (in 10 minutes)`
 	// see https://discord.com/developers/docs/reference#message-formatting-timestamp-styles
-	const description = `<t:${seconds}:t> (<t:${seconds}:R>)`;
+	const description = `<t:${unixTime}:t> (<t:${unixTime}:R>)`;
 
 	return {
 		title,
