@@ -2,6 +2,7 @@ import { ScheduleTime } from '.';
 
 export enum RooDaily {
 	Arena,
+	DuoBattleOfYggdrasil,
 	ExtremeChallenge,
 	GuildExpedition,
 	GuildFeast,
@@ -18,7 +19,7 @@ export const getRooDailies = (date: Date): RooDaily[] => {
 	switch (day) {
 		case 0:
 			// sunday
-			return [RooDaily.ThemedParty, RooDaily.GuildExpedition];
+			return [RooDaily.DuoBattleOfYggdrasil, RooDaily.ThemedParty, RooDaily.GuildExpedition];
 
 		case 1:
 			// monday
@@ -38,11 +39,16 @@ export const getRooDailies = (date: Date): RooDaily[] => {
 
 		case 5:
 			// friday
-			return [RooDaily.GuildFeast, RooDaily.TimeSpaceAbnormality];
+			return [RooDaily.GuildFeast];
 
 		case 6:
 			// saturday
-			return [RooDaily.WeekendBanquet, RooDaily.TimeSpaceAbnormality, RooDaily.TheGuildLeague];
+			return [
+				RooDaily.DuoBattleOfYggdrasil,
+				RooDaily.WeekendBanquet,
+				RooDaily.TimeSpaceAbnormality,
+				RooDaily.TheGuildLeague,
+			];
 	}
 };
 
@@ -50,6 +56,9 @@ export const getRooDailyTime = (event: RooDaily): ScheduleTime => {
 	switch (event) {
 		case RooDaily.RuneFashion:
 			return { hours: 5, minutes: 0 };
+
+		case RooDaily.DuoBattleOfYggdrasil:
+			return { hours: 10, minutes: 0 };
 
 		case RooDaily.GuildFeast:
 		case RooDaily.ThemedParty:
