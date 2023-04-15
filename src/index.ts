@@ -1,7 +1,7 @@
 import { utcToZonedTime } from 'date-fns-tz';
 
 import { generateEmbed } from './roo/embed';
-import { matchEvent } from './roo/match';
+import { matchSchedule } from './roo/match';
 
 import { ROO_TIME_ZONE, RooSchedule, RooScheduleKind, getScheduleTime } from './roo/schedule';
 import { getRooDailies } from './roo/schedule/daily';
@@ -22,25 +22,27 @@ const scheduled = ((_controller, env, ctx) => {
 		...trades.map((value): RooSchedule => [value, RooScheduleKind.Trade]),
 	] satisfies RooSchedule[];
 
-	const embedsWithKind = [] as [DiscordWebhookEmbed, RooScheduleKind][];
+	const embeds = [] as [DiscordWebhookEmbed, RooScheduleKind][];
 	for (const schedule of schedules) {
 		const time = getScheduleTime(schedule);
-		const match = matchEvent(time, date);
+		const match = matchSchedule(time, date);
 		if (match !== undefined) {
-			const embed = generateEmbed(schedule, match, date);
-			embedsWithKind.push([embed, schedule[1]]);
+			const embed = generateEmbed(schedule, match, time, date);
+			embeds.push([embed, schedule[1]]);
 		}
 	}
 
-	if (embedsWithKind.length > 0) {
+	if (embeds.length > 0) {
 		// <@&{ID}> is role mention
 		// ref:  https://discord.com/developers/docs/reference#message-formatting-formats
 		const mention = `<@&${env.DISCORD_ROLE_MENTION_ID}>`;
-		const kinds = [...new Set(embedsWithKind.map(([, kind]) => RooScheduleKind[kind]))].join(' & ');
+		const kinds = [...new Set(embeds.map(([, kind]) => RooScheduleKind[kind]))]
+			.sort((a, b) => a.localeCompare(b))
+			.join(' & ');
 
 		const payload = {
 			content: `${mention} ${kinds}`,
-			embeds: embedsWithKind.map(([embed]) => embed),
+			embeds: embeds.map(([embed]) => embed),
 		} satisfies DiscordWebhookPayload;
 
 		ctx.waitUntil(

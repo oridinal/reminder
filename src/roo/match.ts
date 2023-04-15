@@ -7,14 +7,14 @@ export enum MatchKind {
 	StartsNow,
 }
 
-export const matchEvent = (eventTime: ScheduleTime, date: Date) => {
-	const eventDate = set(date, eventTime);
-	const { hours = 0, minutes = 0 } = intervalToDuration({ start: eventDate, end: date });
+export const matchSchedule = (time: ScheduleTime, date: Date) => {
+	const scheduleDate = set(date, time);
+	const { hours = 0, minutes = 0 } = intervalToDuration({ start: scheduleDate, end: date });
 
 	if (hours === 0) {
 		if (minutes === 0) {
 			return MatchKind.StartsNow;
-		} else if (minutes === 10 && isBefore(date, eventDate)) {
+		} else if (minutes === 10 && isBefore(date, scheduleDate)) {
 			return MatchKind.StartsIn10Minutes;
 		}
 	}
