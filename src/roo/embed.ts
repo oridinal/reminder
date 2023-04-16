@@ -37,10 +37,9 @@ export const generateEmbed = (
 	return {
 		title,
 		description,
-		footer: { text: footer },
+		footer: { text: footer, icon_url: 'https://b.cgas.io/mVhvd_L8tHq1.png' },
 		color: colors[match],
 		image: { url: images[schedule] },
 		timestamp: new Date().toISOString(),
-		thumbnail: { url: 'https://b.cgas.io/mVhvd_L8tHq1.png' },
 	};
 };
