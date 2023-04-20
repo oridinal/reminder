@@ -2,7 +2,7 @@ import { getUnixTime, set } from 'date-fns';
 import { zonedTimeToUtc } from 'date-fns-tz';
 
 import { MatchKind } from './match';
-import { ROO_TIME_ZONE, RooSchedule, RooScheduleKind, ScheduleTime, getScheduleValue } from './schedule';
+import { ROO_TIME_ZONE, Schedule, ScheduleKind, ScheduleTime, getScheduleValue } from './schedule';
 
 import { DiscordWebhookEmbed } from '../types';
 import { toSpaceSeparatedPascalCase } from '../utilities';
@@ -13,19 +13,19 @@ const colors = {
 } satisfies Record<MatchKind, number>;
 
 const images = {
-	[RooScheduleKind.Daily]: 'https://b.cgas.io/LprtTW9DcVG-.png',
-	[RooScheduleKind.Reset]: 'https://b.cgas.io/RcUSRL3-9gug.jpg',
-	[RooScheduleKind.Trade]: 'https://b.cgas.io/dQCoeklKFKs7.jpg',
-} satisfies Record<RooScheduleKind, string>;
+	[ScheduleKind.Daily]: 'https://b.cgas.io/LprtTW9DcVG-.png',
+	[ScheduleKind.Reset]: 'https://b.cgas.io/RcUSRL3-9gug.jpg',
+	[ScheduleKind.Trade]: 'https://b.cgas.io/dQCoeklKFKs7.jpg',
+} satisfies Record<ScheduleKind, string>;
 
 export const generateEmbed = (
-	value: RooSchedule,
+	value: Schedule,
 	match: MatchKind,
 	time: ScheduleTime,
 	date: Date,
 ): DiscordWebhookEmbed => {
 	const schedule = value[1];
-	const [title, footer] = [getScheduleValue(value), RooScheduleKind[schedule]].map(toSpaceSeparatedPascalCase);
+	const [title, footer] = [getScheduleValue(value), ScheduleKind[schedule]].map(toSpaceSeparatedPascalCase);
 
 	const date_ = set(date, time);
 	const dateUtc = zonedTimeToUtc(date_, ROO_TIME_ZONE);

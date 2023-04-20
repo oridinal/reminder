@@ -1,24 +1,24 @@
 import { isMonday } from 'date-fns';
 import { ScheduleTime } from '.';
 
-export enum RooReset {
+export enum Reset {
 	DailyReset,
 	WeeklyReset,
 }
 
-export const getRooResets = (date: Date) => {
-	const values = [RooReset.DailyReset];
+export const getResets = (date: Date) => {
+	const values = [Reset.DailyReset];
 	if (isMonday(date)) {
-		values.push(RooReset.WeeklyReset);
+		values.push(Reset.WeeklyReset);
 	}
 
 	return values;
 };
 
-export const getRooResetTime = (value: RooReset): ScheduleTime => {
+export const getResetTime = (value: Reset): ScheduleTime => {
 	switch (value) {
-		case RooReset.DailyReset:
-		case RooReset.WeeklyReset:
+		case Reset.DailyReset:
+		case Reset.WeeklyReset:
 			return { hours: 5, minutes: 0 };
 	}
 };

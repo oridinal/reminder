@@ -3,9 +3,9 @@ import { utcToZonedTime } from 'date-fns-tz';
 import { generateEmbed } from './roo/embed';
 import { matchSchedule } from './roo/match';
 
-import { ROO_TIME_ZONE, RooSchedule, RooScheduleKind, getScheduleTime } from './roo/schedule';
-import { getRooDailies } from './roo/schedule/daily';
-import { getRooResets } from './roo/schedule/reset';
+import { ROO_TIME_ZONE, Schedule, ScheduleKind, getScheduleTime } from './roo/schedule';
+import { getDailies } from './roo/schedule/daily';
+import { getResets } from './roo/schedule/reset';
 import { trades } from './roo/schedule/trade';
 
 import { DiscordWebhookEmbed, DiscordWebhookPayload } from './types';
@@ -13,16 +13,16 @@ import { DiscordWebhookEmbed, DiscordWebhookPayload } from './types';
 const scheduled = ((_controller, env, ctx) => {
 	const date = utcToZonedTime(Date.now(), ROO_TIME_ZONE);
 
-	const dailies = getRooDailies(date);
-	const resets = getRooResets(date);
+	const dailies = getDailies(date);
+	const resets = getResets(date);
 
 	const schedules = [
-		...dailies.map((value): RooSchedule => [value, RooScheduleKind.Daily]),
-		...resets.map((value): RooSchedule => [value, RooScheduleKind.Reset]),
-		...trades.map((value): RooSchedule => [value, RooScheduleKind.Trade]),
-	] satisfies RooSchedule[];
+		...dailies.map((value): Schedule => [value, ScheduleKind.Daily]),
+		...resets.map((value): Schedule => [value, ScheduleKind.Reset]),
+		...trades.map((value): Schedule => [value, ScheduleKind.Trade]),
+	] satisfies Schedule[];
 
-	const embeds = [] as [DiscordWebhookEmbed, RooScheduleKind][];
+	const embeds = [] as [DiscordWebhookEmbed, ScheduleKind][];
 	for (const schedule of schedules) {
 		const time = getScheduleTime(schedule);
 		const match = matchSchedule(time, date);
@@ -36,7 +36,7 @@ const scheduled = ((_controller, env, ctx) => {
 		// <@&{ID}> is role mention
 		// ref:  https://discord.com/developers/docs/reference#message-formatting-formats
 		const mention = `<@&${env.DISCORD_ROLE_MENTION_ID}>`;
-		const kinds = [...new Set(embeds.map(([, kind]) => RooScheduleKind[kind]))]
+		const kinds = [...new Set(embeds.map(([, kind]) => ScheduleKind[kind]))]
 			.sort((a, b) => a.localeCompare(b))
 			.join(' & ');
 

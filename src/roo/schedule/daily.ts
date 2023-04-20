@@ -1,6 +1,6 @@
 import { ScheduleTime } from '.';
 
-export enum RooDaily {
+export enum Daily {
 	Arena,
 	DuoBattleOfYggdrasil,
 	ExtremeChallenge,
@@ -13,67 +13,62 @@ export enum RooDaily {
 	WeekendBanquet,
 }
 
-export const getRooDailies = (date: Date): RooDaily[] => {
+export const getDailies = (date: Date): Daily[] => {
 	const day = date.getDay() as Day;
 
 	switch (day) {
 		case 0:
 			// sunday
-			return [RooDaily.DuoBattleOfYggdrasil, RooDaily.ThemedParty, RooDaily.GuildExpedition];
+			return [Daily.DuoBattleOfYggdrasil, Daily.ThemedParty, Daily.GuildExpedition];
 
 		case 1:
 			// monday
-			return [RooDaily.GuildFeast, RooDaily.ExtremeChallenge];
+			return [Daily.GuildFeast, Daily.ExtremeChallenge];
 
 		case 2:
 			// tuesday
-			return [RooDaily.GuildFeast, RooDaily.TimeSpaceAbnormality, RooDaily.TheGuildLeague];
+			return [Daily.GuildFeast, Daily.TimeSpaceAbnormality, Daily.TheGuildLeague];
 
 		case 3:
 			// wednesday
-			return [RooDaily.RuneFashion, RooDaily.GuildFeast, RooDaily.Arena];
+			return [Daily.RuneFashion, Daily.GuildFeast, Daily.Arena];
 
 		case 4:
 			// thursday
-			return [RooDaily.GuildFeast, RooDaily.GuildExpedition, RooDaily.TheGuildLeague];
+			return [Daily.GuildFeast, Daily.GuildExpedition, Daily.TheGuildLeague];
 
 		case 5:
 			// friday
-			return [RooDaily.GuildFeast];
+			return [Daily.GuildFeast];
 
 		case 6:
 			// saturday
-			return [
-				RooDaily.DuoBattleOfYggdrasil,
-				RooDaily.WeekendBanquet,
-				RooDaily.TimeSpaceAbnormality,
-				RooDaily.TheGuildLeague,
-			];
+			return [Daily.DuoBattleOfYggdrasil, Daily.WeekendBanquet, Daily.TimeSpaceAbnormality, Daily.TheGuildLeague];
 	}
 };
 
-export const getRooDailyTime = (event: RooDaily): ScheduleTime => {
+export const getDailyTime = (event: Daily): ScheduleTime => {
 	switch (event) {
-		case RooDaily.RuneFashion:
+		case Daily.RuneFashion:
 			return { hours: 5, minutes: 0 };
 
-		case RooDaily.DuoBattleOfYggdrasil:
+		case Daily.DuoBattleOfYggdrasil:
 			return { hours: 10, minutes: 0 };
 
-		case RooDaily.GuildFeast:
-		case RooDaily.ThemedParty:
-		case RooDaily.WeekendBanquet:
+		case Daily.GuildFeast:
+		case Daily.ThemedParty:
+		case Daily.WeekendBanquet:
 			return { hours: 20, minutes: 0 };
 
-		case RooDaily.Arena:
+		case Daily.Arena:
 			return { hours: 20, minutes: 25 };
 
-		case RooDaily.ExtremeChallenge:
-		case RooDaily.GuildExpedition:
-		case RooDaily.TimeSpaceAbnormality:
+		case Daily.ExtremeChallenge:
+		case Daily.GuildExpedition:
+		case Daily.TimeSpaceAbnormality:
 			return { hours: 20, minutes: 30 };
 
-		case RooDaily.TheGuildLeague:
+		case Daily.TheGuildLeague:
 			return { hours: 20, minutes: 55 };
 	}
 };

@@ -1,6 +1,6 @@
-import { RooDaily, getRooDailyTime } from './daily';
-import { RooReset, getRooResetTime } from './reset';
-import { RooTrade, getRooTradeTime } from './trade';
+import { Daily, getDailyTime } from './daily';
+import { Reset, getResetTime } from './reset';
+import { Trade, getTradeTime } from './trade';
 
 export const ROO_TIME_ZONE = '+07:00';
 
@@ -9,39 +9,36 @@ export interface ScheduleTime {
 	minutes: number;
 }
 
-export enum RooScheduleKind {
+export enum ScheduleKind {
 	Daily,
 	Reset,
 	Trade,
 }
 
-export type RooSchedule =
-	| [RooDaily, RooScheduleKind.Daily]
-	| [RooReset, RooScheduleKind.Reset]
-	| [RooTrade, RooScheduleKind.Trade];
+export type Schedule = [Daily, ScheduleKind.Daily] | [Reset, ScheduleKind.Reset] | [Trade, ScheduleKind.Trade];
 
-export const getScheduleTime = ([value, kind]: RooSchedule): ScheduleTime => {
+export const getScheduleTime = ([value, kind]: Schedule): ScheduleTime => {
 	switch (kind) {
-		case RooScheduleKind.Daily:
-			return getRooDailyTime(value);
+		case ScheduleKind.Daily:
+			return getDailyTime(value);
 
-		case RooScheduleKind.Reset:
-			return getRooResetTime(value);
+		case ScheduleKind.Reset:
+			return getResetTime(value);
 
-		case RooScheduleKind.Trade:
-			return getRooTradeTime(value);
+		case ScheduleKind.Trade:
+			return getTradeTime(value);
 	}
 };
 
-export const getScheduleValue = ([value, kind]: RooSchedule): string => {
+export const getScheduleValue = ([value, kind]: Schedule): string => {
 	switch (kind) {
-		case RooScheduleKind.Daily:
-			return RooDaily[value];
+		case ScheduleKind.Daily:
+			return Daily[value];
 
-		case RooScheduleKind.Reset:
-			return RooReset[value];
+		case ScheduleKind.Reset:
+			return Reset[value];
 
-		case RooScheduleKind.Trade:
-			return RooTrade[value];
+		case ScheduleKind.Trade:
+			return Trade[value];
 	}
 };

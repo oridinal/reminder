@@ -1,6 +1,6 @@
 import { ScheduleTime } from '.';
 
-export enum RooTrade {
+export enum Trade {
 	AuctionConclude,
 	AuctionRefresh,
 	AuctionStart,
@@ -10,30 +10,30 @@ export enum RooTrade {
 }
 
 export const trades = [
-	RooTrade.AuctionConclude,
-	RooTrade.AuctionRefresh,
-	RooTrade.AuctionStart,
-	RooTrade.FirstStoreRefresh,
-	RooTrade.SecondStoreRefresh,
-	RooTrade.ThirdStoreRefresh,
+	Trade.AuctionConclude,
+	Trade.AuctionRefresh,
+	Trade.AuctionStart,
+	Trade.FirstStoreRefresh,
+	Trade.SecondStoreRefresh,
+	Trade.ThirdStoreRefresh,
 ];
 
-export const getRooTradeTime = (value: RooTrade): ScheduleTime => {
+export const getTradeTime = (value: Trade): ScheduleTime => {
 	switch (value) {
-		case RooTrade.AuctionRefresh:
+		case Trade.AuctionRefresh:
 			return { hours: 5, minutes: 0 };
 
-		case RooTrade.FirstStoreRefresh:
+		case Trade.FirstStoreRefresh:
 			return { hours: 12, minutes: 0 };
 
-		case RooTrade.SecondStoreRefresh:
+		case Trade.SecondStoreRefresh:
 			return { hours: 16, minutes: 0 };
 
-		case RooTrade.AuctionStart:
-		case RooTrade.ThirdStoreRefresh:
+		case Trade.AuctionStart:
+		case Trade.ThirdStoreRefresh:
 			return { hours: 20, minutes: 0 };
 
-		case RooTrade.AuctionConclude:
+		case Trade.AuctionConclude:
 			return { hours: 22, minutes: 0 };
 	}
 };

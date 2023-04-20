@@ -6,7 +6,7 @@ describe('toSpaceSeparatedPascalCase', () => {
 	it('should convert correctly', () => {
 		const predicates = [
 			['PascalCase', 'Pascal Case'],
-			['RooDailyEvent', 'Roo Daily Event'],
+			['DailyEvent', 'Daily Event'],
 			['StartingIn10Minutes', 'Starting In 10 Minutes'],
 		];
 
