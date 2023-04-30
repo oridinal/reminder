@@ -1,4 +1,5 @@
 import { Daily, getDailyTime } from './daily';
+import { Event, getEventTime } from './event';
 import { Reset, getResetTime } from './reset';
 import { Trade, getTradeTime } from './trade';
 
@@ -11,16 +12,24 @@ export interface ScheduleTime {
 
 export enum ScheduleKind {
 	Daily,
+	Event,
 	Reset,
 	Trade,
 }
 
-export type Schedule = [Daily, ScheduleKind.Daily] | [Reset, ScheduleKind.Reset] | [Trade, ScheduleKind.Trade];
+export type Schedule =
+	| [Daily, ScheduleKind.Daily]
+	| [Event, ScheduleKind.Event]
+	| [Reset, ScheduleKind.Reset]
+	| [Trade, ScheduleKind.Trade];
 
 export const getScheduleTime = ([value, kind]: Schedule): ScheduleTime => {
 	switch (kind) {
 		case ScheduleKind.Daily:
 			return getDailyTime(value);
+
+		case ScheduleKind.Event:
+			return getEventTime(value);
 
 		case ScheduleKind.Reset:
 			return getResetTime(value);
@@ -34,6 +43,9 @@ export const getScheduleValue = ([value, kind]: Schedule): string => {
 	switch (kind) {
 		case ScheduleKind.Daily:
 			return Daily[value];
+
+		case ScheduleKind.Event:
+			return Event[value];
 
 		case ScheduleKind.Reset:
 			return Reset[value];

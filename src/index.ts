@@ -5,6 +5,7 @@ import { matchSchedule } from './roo/match';
 
 import { ROO_TIME_ZONE, Schedule, ScheduleKind, getScheduleTime } from './roo/schedule';
 import { getDailies } from './roo/schedule/daily';
+import { getEvents } from './roo/schedule/event';
 import { getResets } from './roo/schedule/reset';
 import { trades } from './roo/schedule/trade';
 
@@ -14,10 +15,12 @@ const scheduled = ((_controller, env, ctx) => {
 	const date = utcToZonedTime(Date.now(), ROO_TIME_ZONE);
 
 	const dailies = getDailies(date);
+	const events = getEvents(date);
 	const resets = getResets(date);
 
 	const schedules = [
 		...dailies.map((value): Schedule => [value, ScheduleKind.Daily]),
+		...events.map((value): Schedule => [value, ScheduleKind.Event]),
 		...resets.map((value): Schedule => [value, ScheduleKind.Reset]),
 		...trades.map((value): Schedule => [value, ScheduleKind.Trade]),
 	] satisfies Schedule[];

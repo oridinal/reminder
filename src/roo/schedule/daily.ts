@@ -47,8 +47,8 @@ export const getDailies = (date: Date): Daily[] => {
 	}
 };
 
-export const getDailyTime = (event: Daily): ScheduleTime => {
-	switch (event) {
+export const getDailyTime = (value: Daily): ScheduleTime => {
+	switch (value) {
 		case Daily.RuneFashion:
 			return { hours: 5, minutes: 0 };
 
