@@ -9,14 +9,8 @@ import { toSpaceSeparatedPascalCase } from '../utilities';
 
 const colors = {
 	[MatchKind.StartsIn10Minutes]: 0x8bd3e6, // pastel blue
-	[MatchKind.StartsNow]: 0x77dd77, // pastel green
+	[MatchKind.StartsNow]: 0xff6961, // pastel red
 } satisfies Record<MatchKind, number>;
-
-const images = {
-	[ScheduleKind.Daily]: 'https://b.cgas.io/LprtTW9DcVG-.png',
-	[ScheduleKind.Reset]: 'https://b.cgas.io/RcUSRL3-9gug.jpg',
-	[ScheduleKind.Trade]: 'https://b.cgas.io/dQCoeklKFKs7.jpg',
-} satisfies Record<ScheduleKind, string>;
 
 export const generateEmbed = (
 	value: Schedule,
@@ -39,7 +33,6 @@ export const generateEmbed = (
 		description,
 		footer: { text: footer, icon_url: 'https://b.cgas.io/mVhvd_L8tHq1.png' },
 		color: colors[match],
-		image: { url: images[schedule] },
 		timestamp: new Date().toISOString(),
 	};
 };

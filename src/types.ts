@@ -19,12 +19,6 @@ export interface DiscordWebhookEmbed {
 	/** color code of the embed */
 	color?: number;
 
-	/** image information */
-	image?: {
-		/** source url of image (only supports http(s) and attachments) */
-		url: string;
-	};
-
 	/** footer information */
 	footer?: {
 		/** footer text */
