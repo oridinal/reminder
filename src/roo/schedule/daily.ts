@@ -47,6 +47,36 @@ export const getDailies = (date: Date): Daily[] => {
 	}
 };
 
+export const getDailyDuration = (value: Daily): Duration => {
+	switch (value) {
+		case Daily.Arena:
+			return { minutes: 35 };
+
+		case Daily.DuoBattleOfYggdrasil:
+			return { hours: 14 };
+
+		case Daily.ExtremeChallenge:
+			return { hours: 1, minutes: 30 };
+
+		case Daily.GuildExpedition:
+		case Daily.GuildFeast:
+		case Daily.WeekendBanquet:
+			return { minutes: 20 };
+
+		case Daily.RuneFashion:
+			return { hours: 19 };
+
+		case Daily.TheGuildLeague:
+			return { minutes: 25 };
+
+		case Daily.ThemedParty:
+			return { minutes: 30 };
+
+		case Daily.TimeSpaceAbnormality:
+			return { minutes: 13 };
+	}
+};
+
 export const getDailyTime = (value: Daily): ScheduleTime => {
 	switch (value) {
 		case Daily.RuneFashion:

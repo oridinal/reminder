@@ -3,7 +3,7 @@ import { utcToZonedTime } from 'date-fns-tz';
 import { generateEmbed } from './roo/embed';
 import { matchSchedule } from './roo/match';
 
-import { ROO_TIME_ZONE, Schedule, ScheduleKind, getScheduleTime } from './roo/schedule';
+import { ROO_TIME_ZONE, Schedule, ScheduleKind, getScheduleDuration, getScheduleTime } from './roo/schedule';
 import { getDailies } from './roo/schedule/daily';
 import { getEvents } from './roo/schedule/event';
 import { getResets } from './roo/schedule/reset';
@@ -30,7 +30,8 @@ const scheduled = ((_controller, env, ctx) => {
 		const time = getScheduleTime(schedule);
 		const match = matchSchedule(time, date);
 		if (match !== undefined) {
-			const embed = generateEmbed(schedule, match, time, date);
+			const duration = getScheduleDuration(schedule);
+			const embed = generateEmbed(schedule, match, date, time, duration);
 			embeds.push([embed, schedule[1]]);
 		}
 	}

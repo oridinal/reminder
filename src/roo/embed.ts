@@ -1,4 +1,4 @@
-import { getUnixTime, set } from 'date-fns';
+import { add, getUnixTime, set } from 'date-fns';
 import { zonedTimeToUtc } from 'date-fns-tz';
 
 import { MatchKind } from './match';
@@ -15,24 +15,34 @@ const colors = {
 export const generateEmbed = (
 	value: Schedule,
 	match: MatchKind,
-	time: ScheduleTime,
 	date: Date,
+	time: ScheduleTime,
+	duration?: Duration,
 ): DiscordWebhookEmbed => {
 	const schedule = value[1];
 	const [title, footer] = [getScheduleValue(value), ScheduleKind[schedule]].map(toSpaceSeparatedPascalCase);
 
-	const date_ = set(date, time);
-	const dateUtc = zonedTimeToUtc(date_, ROO_TIME_ZONE);
-	const unixTime = getUnixTime(dateUtc);
-	// description will be shown like `20:00 (in 10 minutes)`
-	// see https://discord.com/developers/docs/reference#message-formatting-timestamp-styles
-	const description = `<t:${unixTime}:t> (<t:${unixTime}:R>)`;
+	const startDate = zonedTimeToUtc(set(date, time), ROO_TIME_ZONE);
+	const start = toDiscordTimestamp(startDate);
+	const fields: DiscordWebhookEmbed['fields'] = [{ name: 'START', value: start, inline: true }];
+	if (duration !== undefined && match === MatchKind.StartsNow) {
+		const endDate = add(startDate, duration);
+		const end = toDiscordTimestamp(endDate);
+		fields.push({ name: 'END', value: end, inline: true });
+	}
 
 	return {
 		title,
-		description,
+		fields,
 		footer: { text: footer, icon_url: 'https://b.cgas.io/mVhvd_L8tHq1.png' },
 		color: colors[match],
 		timestamp: new Date().toISOString(),
 	};
+};
+
+const toDiscordTimestamp = (date: Date) => {
+	const unixTime = getUnixTime(date);
+	// below will be shown like `20:00 (in 10 minutes)`
+	// see https://discord.com/developers/docs/reference#message-formatting-timestamp-styles
+	return `<t:${unixTime}:t> (<t:${unixTime}:R>)`;
 };
