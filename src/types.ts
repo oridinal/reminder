@@ -10,6 +10,9 @@ export interface DiscordWebhookEmbed {
 	/** title of embed */
 	title?: string;
 
+	/** description of embed */
+	description?: string;
+
 	/** timestamp of embed content */
 	timestamp?: string;
 

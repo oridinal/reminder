@@ -1,4 +1,4 @@
-import { add, getUnixTime, set } from 'date-fns';
+import { add, formatDuration, getUnixTime, set } from 'date-fns';
 import { zonedTimeToUtc } from 'date-fns-tz';
 
 import { MatchKind } from './match';
@@ -22,6 +22,12 @@ export const generateEmbed = (
 	const schedule = value[1];
 	const [title, footer] = [getScheduleValue(value), ScheduleKind[schedule]].map(toSpaceSeparatedPascalCase);
 
+	let description: DiscordWebhookEmbed['description'] = undefined;
+	if (duration !== undefined) {
+		const durationString = formatDuration(duration, { format: ['hours', 'minutes'] });
+		description = `Duration: ${durationString}`;
+	}
+
 	const startDate = zonedTimeToUtc(set(date, time), ROO_TIME_ZONE);
 	const start = toDiscordTimestamp(startDate);
 	const fields: DiscordWebhookEmbed['fields'] = [{ name: 'START', value: start, inline: true }];
@@ -33,6 +39,7 @@ export const generateEmbed = (
 
 	return {
 		title,
+		description,
 		fields,
 		footer: { text: footer, icon_url: 'https://b.cgas.io/mVhvd_L8tHq1.png' },
 		color: colors[match],
