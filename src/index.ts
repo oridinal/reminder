@@ -9,8 +9,6 @@ import { getEvents } from './roo/schedule/event';
 import { getResets } from './roo/schedule/reset';
 import { trades } from './roo/schedule/trade';
 
-import { DiscordWebhookEmbed, DiscordWebhookPayload } from './types';
-
 const scheduled = ((_controller, env, ctx) => {
 	const date = utcToZonedTime(Date.now(), ROO_TIME_ZONE);
 
@@ -19,20 +17,20 @@ const scheduled = ((_controller, env, ctx) => {
 	const resets = getResets(date);
 
 	const schedules = [
-		...dailies.map((value): Schedule => [value, ScheduleKind.Daily]),
-		...events.map((value): Schedule => [value, ScheduleKind.Event]),
-		...resets.map((value): Schedule => [value, ScheduleKind.Reset]),
-		...trades.map((value): Schedule => [value, ScheduleKind.Trade]),
+		...dailies.map((value): Schedule => ({ kind: ScheduleKind.Daily, value })),
+		...events.map((value): Schedule => ({ kind: ScheduleKind.Event, value })),
+		...resets.map((value): Schedule => ({ kind: ScheduleKind.Reset, value })),
+		...trades.map((value): Schedule => ({ kind: ScheduleKind.Trade, value })),
 	] satisfies Schedule[];
 
-	const embeds = [] as [DiscordWebhookEmbed, ScheduleKind][];
+	const embeds = [] as KindValue<ScheduleKind, DiscordWebhookEmbed>[];
 	for (const schedule of schedules) {
 		const time = getScheduleTime(schedule);
 		const match = matchSchedule(time, date);
 		if (match !== undefined) {
 			const duration = getScheduleDuration(schedule);
-			const embed = generateEmbed(schedule, match, date, time, duration);
-			embeds.push([embed, schedule[1]]);
+			const embed = generateEmbed(schedule, match.kind, date, match.time, duration);
+			embeds.push({ kind: schedule.kind, value: embed });
 		}
 	}
 
@@ -40,13 +38,13 @@ const scheduled = ((_controller, env, ctx) => {
 		// <@&{ID}> is role mention
 		// ref:  https://discord.com/developers/docs/reference#message-formatting-formats
 		const mention = `<@&${env.DISCORD_ROLE_MENTION_ID}>`;
-		const kinds = [...new Set(embeds.map(([, kind]) => ScheduleKind[kind]))]
+		const kinds = [...new Set(embeds.map(({ kind: key }) => ScheduleKind[key]))]
 			.sort((a, b) => a.localeCompare(b))
 			.join(' & ');
 
 		const payload = {
 			content: `${mention} ${kinds}`,
-			embeds: embeds.map(([embed]) => embed),
+			embeds: embeds.map(({ value }) => value),
 		} satisfies DiscordWebhookPayload;
 
 		ctx.waitUntil(

@@ -4,7 +4,6 @@ import { zonedTimeToUtc } from 'date-fns-tz';
 import { MatchKind } from './match';
 import { ROO_TIME_ZONE, Schedule, ScheduleKind, ScheduleTime, getScheduleValue } from './schedule';
 
-import { DiscordWebhookEmbed } from '../types';
 import { toSpaceSeparatedPascalCase } from '../utilities';
 
 const colors = {
@@ -13,14 +12,13 @@ const colors = {
 } satisfies Record<MatchKind, number>;
 
 export const generateEmbed = (
-	value: Schedule,
+	schedule: Schedule,
 	match: MatchKind,
 	date: Date,
 	time: ScheduleTime,
 	duration?: Duration,
 ): DiscordWebhookEmbed => {
-	const schedule = value[1];
-	const [title, footer] = [getScheduleValue(value), ScheduleKind[schedule]].map(toSpaceSeparatedPascalCase);
+	const [title, footer] = [getScheduleValue(schedule), ScheduleKind[schedule.kind]].map(toSpaceSeparatedPascalCase);
 
 	const startDate = zonedTimeToUtc(set(date, time), ROO_TIME_ZONE);
 	const start = toDiscordTimestamp(startDate);

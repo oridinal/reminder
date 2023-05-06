@@ -18,12 +18,12 @@ export enum ScheduleKind {
 }
 
 export type Schedule =
-	| [Daily, ScheduleKind.Daily]
-	| [Event, ScheduleKind.Event]
-	| [Reset, ScheduleKind.Reset]
-	| [Trade, ScheduleKind.Trade];
+	| KindValue<ScheduleKind.Daily, Daily>
+	| KindValue<ScheduleKind.Event, Event>
+	| KindValue<ScheduleKind.Reset, Reset>
+	| KindValue<ScheduleKind.Trade, Trade>;
 
-export const getScheduleDuration = ([value, kind]: Schedule): Duration | undefined => {
+export const getScheduleDuration = ({ kind, value }: Schedule): Duration | undefined => {
 	switch (kind) {
 		case ScheduleKind.Daily:
 			return getDailyDuration(value);
@@ -33,7 +33,7 @@ export const getScheduleDuration = ([value, kind]: Schedule): Duration | undefin
 	}
 };
 
-export const getScheduleTime = ([value, kind]: Schedule): ScheduleTime => {
+export const getScheduleTime = ({ kind, value }: Schedule): MaybeArray<ScheduleTime> => {
 	switch (kind) {
 		case ScheduleKind.Daily:
 			return getDailyTime(value);
@@ -49,7 +49,7 @@ export const getScheduleTime = ([value, kind]: Schedule): ScheduleTime => {
 	}
 };
 
-export const getScheduleValue = ([value, kind]: Schedule): string => {
+export const getScheduleValue = ({ kind, value }: Schedule): string => {
 	switch (kind) {
 		case ScheduleKind.Daily:
 			return Daily[value];

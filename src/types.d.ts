@@ -1,4 +1,4 @@
-export interface DiscordWebhookPayload {
+interface DiscordWebhookPayload {
 	/** the message contents (up to 2000 characters) */
 	content?: string;
 
@@ -6,7 +6,7 @@ export interface DiscordWebhookPayload {
 	embeds?: DiscordWebhookEmbed[];
 }
 
-export interface DiscordWebhookEmbed {
+interface DiscordWebhookEmbed {
 	/** title of embed */
 	title?: string;
 
@@ -40,3 +40,6 @@ export interface DiscordWebhookEmbed {
 		icon_url?: string;
 	};
 }
+
+type KindValue<K, V> = { kind: K; value: V };
+type MaybeArray<T> = T | T[];
