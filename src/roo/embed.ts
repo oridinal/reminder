@@ -22,19 +22,23 @@ export const generateEmbed = (
 	const schedule = value[1];
 	const [title, footer] = [getScheduleValue(value), ScheduleKind[schedule]].map(toSpaceSeparatedPascalCase);
 
-	let description: DiscordWebhookEmbed['description'] = undefined;
-	if (duration !== undefined) {
-		const durationString = formatDuration(duration, { format: ['hours', 'minutes'] });
-		description = `Duration: ${durationString}`;
-	}
-
 	const startDate = zonedTimeToUtc(set(date, time), ROO_TIME_ZONE);
 	const start = toDiscordTimestamp(startDate);
-	const fields: DiscordWebhookEmbed['fields'] = [{ name: 'START', value: start, inline: true }];
-	if (duration !== undefined && match === MatchKind.StartsNow) {
-		const endDate = add(startDate, duration);
-		const end = toDiscordTimestamp(endDate);
-		fields.push({ name: 'END', value: end, inline: true });
+
+	let description: DiscordWebhookEmbed['description'];
+	let fields: DiscordWebhookEmbed['fields'];
+	if (duration === undefined) {
+		description = start;
+	} else {
+		const duration_ = formatDuration(duration, { format: ['hours', 'minutes'] });
+		description = `Duration: ${duration_}`;
+
+		fields = [{ name: 'START', value: start, inline: true }];
+		if (match === MatchKind.StartsNow) {
+			const endDate = add(startDate, duration);
+			const end = toDiscordTimestamp(endDate);
+			fields.push({ name: 'END', value: end, inline: true });
+		}
 	}
 
 	return {
