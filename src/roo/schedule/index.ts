@@ -1,5 +1,5 @@
 import { Daily, getDailyDuration, getDailyTime } from './daily';
-import { Event, getEventTime } from './event';
+import { Event, getEventDuration, getEventTime } from './event';
 import { Reset, getResetTime } from './reset';
 import { Trade, getTradeTime } from './trade';
 
@@ -27,6 +27,9 @@ export const getScheduleDuration = ([value, kind]: Schedule): Duration | undefin
 	switch (kind) {
 		case ScheduleKind.Daily:
 			return getDailyDuration(value);
+
+		case ScheduleKind.Event:
+			return getEventDuration(value);
 	}
 };
 

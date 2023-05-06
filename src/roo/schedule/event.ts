@@ -22,6 +22,13 @@ export const getEvents = (date: Date): Event[] => {
 		.map(([event]) => event);
 };
 
+export const getEventDuration = (value: Event): Duration => {
+	switch (value) {
+		case Event.VeinsStrategicBattle:
+			return { hours: 2 };
+	}
+};
+
 export const getEventTime = (value: Event): ScheduleTime => {
 	switch (value) {
 		case Event.VeinsStrategicBattle:
