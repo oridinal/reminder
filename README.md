@@ -20,9 +20,9 @@ In your fork, go to `Settings` then `Secrets and Variable > Actions`. It should 
 
 Here, you need to add 2 additional secrets.
 
-| `DISCORD_WEBHOOK_URL`          | `DISCORD_ROLE_MENTION_ID`        |
-|--------------------------------|----------------------------------|
-| The webhook url to send to[^1] | The role id to mention[^2]       |
+| `DISCORD_WEBHOOK_URL`          | `DISCORD_ROLE_MENTION_ID`  |
+| ------------------------------ | -------------------------- |
+| The webhook url to send to[^1] | The role id to mention[^2] |
 
 [^1]: see `Making a Webhook` at https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks to create one in your discord server
 [^2]: check https://discordhelp.net/role-id for a guide to get the role id
