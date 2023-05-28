@@ -1,6 +1,6 @@
 # oridinal/reminder
 
-Ragnarok Origin Global reminder using Discord webhook. Check out my [discord server](https://discord.gg/Yx5wa3qxnU) to see it in action.
+Ragnarok Origin Global reminder using Discord webhook. Check out my [discord server](https://discord.gg/GTxyAaHXtt) to see it in action.
 
 ## Deployment
 
