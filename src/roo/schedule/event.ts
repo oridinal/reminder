@@ -14,8 +14,8 @@ export const getEvents = (date: Date): Event[] => {
 			[
 				Event.CreamRevelry, // 2023 (5/22 5:00 - 4/6 5:00)
 				{
-					start: set(date, { year: 2023, month: 5, date: 22, hours: 5, minutes: 0, seconds: 0, milliseconds: 0 }),
-					end: set(date, { year: 2023, month: 6, date: 4, hours: 5, minutes: 0, seconds: 0, milliseconds: 0 }),
+					start: set(date, { year: 2023, month: 4, date: 22, hours: 5, minutes: 0, seconds: 0, milliseconds: 0 }),
+					end: set(date, { year: 2023, month: 5, date: 4, hours: 5, minutes: 0, seconds: 0, milliseconds: 0 }),
 				},
 			],
 			[
