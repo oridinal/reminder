@@ -19,11 +19,19 @@ export const getEvents = (date: Date): Event[] => {
 				},
 			],
 			[
-				Event.VeinsStrategicBattle, // 2023 (4/27 5:00 - 5/4 4:59)
-				{
-					start: set(date, { year: 2023, month: 3, date: 27, hours: 5, minutes: 0, seconds: 0, milliseconds: 0 }),
-					end: set(date, { year: 2023, month: 4, date: 4, hours: 4, minutes: 59, seconds: 59, milliseconds: 59 }),
-				},
+				Event.VeinsStrategicBattle,
+				[
+					{
+						// 2023 (4/27 5:00 - 5/4 4:59)
+						start: set(date, { year: 2023, month: 3, date: 27, hours: 5, minutes: 0, seconds: 0, milliseconds: 0 }),
+						end: set(date, { year: 2023, month: 4, date: 4, hours: 4, minutes: 59, seconds: 59, milliseconds: 59 }),
+					},
+					{
+						// 2023 (5/29 5:00 - 6/5 4:59)
+						start: set(date, { year: 2023, month: 4, date: 29, hours: 5, minutes: 0, seconds: 0, milliseconds: 0 }),
+						end: set(date, { year: 2023, month: 5, date: 5, hours: 4, minutes: 59, seconds: 59, milliseconds: 59 }),
+					},
+				],
 			],
 			[
 				Event.MonthiversaryDance, // 2023 (5/6 5:00 - 5/12 4:59)
@@ -32,9 +40,13 @@ export const getEvents = (date: Date): Event[] => {
 					end: set(date, { year: 2023, month: 4, date: 12, hours: 4, minutes: 59, seconds: 59, milliseconds: 59 }),
 				},
 			],
-		] satisfies [Event, Interval][]
+		] satisfies [Event, MaybeArray<Interval>][]
 	)
-		.filter(([, interval]) => isWithinInterval(date, interval))
+		.filter(([, intervals]) =>
+			Array.isArray(intervals)
+				? intervals.some((interval) => isWithinInterval(date, interval))
+				: isWithinInterval(date, intervals),
+		)
 		.map(([event]) => event);
 };
 
