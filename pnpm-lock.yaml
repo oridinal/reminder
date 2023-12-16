@@ -26,8 +26,8 @@ devDependencies:
     specifier: 0.34.6
     version: 0.34.6
   wrangler:
-    specifier: 2.20.1
-    version: 2.20.1
+    specifier: 2.20.2
+    version: 2.20.2
 
 packages:
 
@@ -1633,8 +1633,8 @@ packages:
       stackback: 0.0.2
     dev: true
 
-  /wrangler@2.20.1:
-    resolution: {integrity: sha512-5fl7xF7OkRHim0B0kVXtmSPMrRhRKZ3rqAdn9tKYgi6MnZOvWC+HesGKpNxpVUWsJYpPfJ5AU6gZ6gEL1OLmFQ==}
+  /wrangler@2.20.2:
+    resolution: {integrity: sha512-ZWydYGuKbHC8PdKLk7JAdRYMK78mHVnmaFsLRf2ZpnmVl2nQl9lKIXKKGVUdmezj70FvLhJCD/2LsGOPGg2AFg==}
     engines: {node: '>=16.13.0'}
     hasBin: true
     dependencies:
