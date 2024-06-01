@@ -2,7 +2,7 @@
 	"name": "oridinal-reminder",
 	"version": "0.0.0",
 	"devDependencies": {
-		"@cloudflare/workers-types": "4.20240512.0",
+		"@cloudflare/workers-types": "4.20240529.0",
 		"prettier": "2.8.8",
 		"typescript": "5.4.5",
 		"vitest": "0.34.6",
