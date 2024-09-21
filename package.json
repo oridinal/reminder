@@ -16,7 +16,7 @@
 		"check": "tsc && prettier --check ."
 	},
 	"dependencies": {
-		"date-fns": "2.30.0",
+		"date-fns": "4.1.0",
 		"date-fns-tz": "2.0.1"
 	}
 }
