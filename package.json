@@ -6,7 +6,7 @@
 		"prettier": "2.8.8",
 		"typescript": "5.6.2",
 		"vitest": "0.34.6",
-		"wrangler": "2.21.1"
+		"wrangler": "3.82.0"
 	},
 	"private": true,
 	"scripts": {
